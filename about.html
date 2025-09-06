@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>About Us — Creatix Studio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Learn about the team, mission, and values behind Creatix Studio.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=11">
+
+  <!-- About page enhancements: hero, overlay header, and sequenced reveals -->
+  <style>
+    :root {
+      --hero-mask-start: rgba(0,0,0,.65);
+      --hero-mask-end: rgba(0,0,0,.25);
+      --glass-surface: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.14);
+      --muted: rgba(255,255,255,0.75);
+      --muted-strong: rgba(255,255,255,0.9);
+      --accent: #9fe8df;
+    }
+
+    /* Header overlay for hero */
+    .site-header.header-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0));
+    }
+    .site-header.header-overlay .brand-name,
+    .site-header.header-overlay .brand-mark,
+    .site-header.header-overlay nav a,
+    .site-header.header-overlay .dropdown-toggle { color: #fff; }
+    .site-header.header-overlay .nav-toggle .bar { background: #fff; }
+    .site-header.header-overlay .nav-cta .btn { background: #fff; color: #111; }
+
+    /* Hero: full-bleed, full-height background */
+    .hero.hero-bg {
+      position: relative;
+      background-image: var(--hero-image);
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      min-height: 100vh;   /* desktop */
+      min-height: 100svh;  /* mobile safe */
+      min-height: 100dvh;  /* dynamic viewport */
+      display: flex;
+      align-items: center;
+      width: 100%;
+      margin: 0;
+      border-radius: 0;
+      isolation: isolate;
+      padding-top: 6rem; /* clear the overlay header */
+    }
+    .hero.hero-bg::before {
+      content: "";
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(180deg, var(--hero-mask-start) 0%, transparent 45%),
+        radial-gradient(90% 70% at 50% 30%, rgba(0,0,0,0.35), rgba(0,0,0,0.75));
+      z-index: 0;
+    }
+    .hero.hero-bg .container,
+    .hero.hero-bg .hero-split,
+    .hero.hero-bg .hero-copy { position: relative; z-index: 1; }
+
+    .hero-copy .eyebrow {
+      letter-spacing: normal;
+      text-transform: none;
+      color: var(--muted);
+      margin-bottom: .5rem;
+      font-weight: 600;
+    }
+    .hero-copy .lede { color: var(--muted-strong); max-width: 62ch; }
+
+    /* Scroll indicator */
+    .scroll-indicator {
+      position: absolute; left: 50%; bottom: 1rem; transform: translateX(-50%);
+      color: var(--muted);
+      font-size: .9rem; display: inline-flex; align-items: center; gap: .5rem; z-index: 1;
+    }
+    .scroll-indicator i {
+      width: 10px; height: 16px; border-radius: 6px;
+      border: 2px solid var(--muted); position: relative; display: inline-block;
+    }
+    .scroll-indicator i::after {
+      content: ""; position: absolute; left: 50%; top: 2px; transform: translateX(-50%);
+      width: 2px; height: 4px; background: var(--muted-strong); border-radius: 2px;
+      animation: wheel 1.6s ease-in-out infinite;
+    }
+    @keyframes wheel {
+      0% { transform: translate(-50%, 0); opacity: 1; }
+      100% { transform: translate(-50%, 6px); opacity: 0; }
+    }
+
+    /* Sequenced reveals */
+    [data-seq] > * {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1);
+      transition-delay: calc(var(--i, 0) * 90ms);
+      will-change: transform, opacity;
+    }
+    [data-seq].in > * {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Mission section refinements */
+    .section .two-col { align-items: start; gap: 32px; }
+    .media-card {
+      background: var(--glass-surface);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 12px;
+    }
+    .stat-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 10px; margin-top: 12px;
+    }
+    .stat-grid .card-soft {
+      background: var(--glass-surface);
+      border: 1px solid var(--glass-border);
+      color: #fff;
+    }
+    .stat-grid .muted { color: var(--muted); }
+
+    /* Values accordion styling */
+    .accordion[data-accordion] .accordion-item {
+      background: var(--glass-surface);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .accordion[data-accordion] .accordion-header {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; padding: 16px 18px; cursor: pointer;
+    }
+    .accordion[data-accordion] .accordion-header .chev {
+      width: 18px; height: 18px; border: solid var(--muted); border-width: 0 2px 2px 0;
+      transform: rotate(45deg); transition: transform .25s ease;
+      display: inline-block; margin-left: 8px;
+    }
+    .accordion[data-accordion] details[open] .accordion-header .chev { transform: rotate(-135deg); }
+    .accordion[data-accordion] .accordion-panel { padding: 0 18px 16px; color: var(--muted-strong); }
+
+    /* Timeline modernization */
+    .timeline {
+      list-style: none; margin: 0; padding: 0; position: relative;
+    }
+    .timeline li { display: grid; grid-template-columns: 20px 1fr; gap: 14px; position: relative; padding: 10px 0; }
+    .timeline li .dot {
+      width: 12px; height: 12px; border-radius: 999px; margin-top: 6px;
+      background: rgba(159,232,223,.35); border: 2px solid var(--accent); position: relative;
+    }
+    .timeline li .dot::after {
+      content: ""; position: absolute; left: 50%; top: 12px; transform: translateX(-50%);
+      width: 2px; height: calc(100% - 12px); background: rgba(255,255,255,.12);
+    }
+    .timeline li:last-child .dot::after { display: none; }
+    .timeline .content h3 { margin: 0 0 4px; }
+    .timeline .content p { margin: 0; color: var(--muted-strong); }
+
+    /* Team cards */
+    .card-grid { gap: 16px; }
+    .card.luxe-card {
+      background: var(--glass-surface);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+    }
+    .card.luxe-card h3 { margin-bottom: 6px; }
+    .card.luxe-card .mt { margin-top: 8px; }
+    .card.luxe-card .link-arrow[aria-disabled="true"] { opacity: .6; pointer-events: none; }
+
+    /* Tabs polish */
+    .tabs .tablist {
+      display: inline-flex; gap: 8px; background: var(--glass-surface);
+      border: 1px solid var(--glass-border);
+      border-radius: 999px; padding: 6px;
+    }
+    .tabs .tab {
+      border-radius: 999px; padding: 8px 14px; color: var(--muted);
+      border: 1px solid transparent; background: transparent;
+    }
+    .tabs .tab.active {
+      color: #111; background: #fff; border-color: #fff; font-weight: 700;
+    }
+    .tabs .tab-panel { margin-top: 16px; }
+
+    /* Mobile nav legibility when open */
+    @media (max-width: 900px) {
+      .site-header.header-overlay .nav-links {
+        background: rgba(0,0,0,0.75);
+        backdrop-filter: saturate(140%) blur(8px);
+      }
+      .site-header.header-overlay .nav-links a { color: #fff; }
+      .stat-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .stat-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header (overlayed on hero) -->
+  <header class="site-header header-overlay">
+    <div class="container nav">
+      <a href="index.html" class="brand" aria-label="Creatix Studio">
+        <span class="brand-mark">✨</span>
+        <span class="brand-name">Creatix Studio</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-controls="primaryNav" aria-expanded="false">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+      <nav>
+        <ul class="nav-links" id="primaryNav">
+          <li><a href="index.html" data-nav>Home</a></li>
+          <li><a href="about.html" data-nav>About Us</a></li>
+          <li class="dropdown">
+            <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="menu" aria-controls="servicesMenu">Services ▾</button>
+            <ul class="dropdown-menu" id="servicesMenu" role="menu">
+              <li role="none"><a role="menuitem" href="services.html">All Services</a></li>
+              <li role="none"><a role="menuitem" href="service-video-creation.html">Video Creation</a></li>
+              <li role="none"><a role="menuitem" href="service-image-generation.html">Image Generation</a></li>
+              <li role="none"><a role="menuitem" href="service-content-writing.html">Content Writing</a></li>
+              <li role="none"><a role="menuitem" href="service-logo-generation.html">Logo Generation</a></li>
+              <li role="none"><a role="menuitem" href="service-fashion-design.html">Fashion & Clothes Design</a></li>
+            </ul>
+          </li>
+          <li><a href="plans.html" data-nav>Plans</a></li>
+          <li class="nav-cta">
+            <a href="contact.html" class="btn btn-accent" data-nav>Contact Us</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero with background image -->
+  <section
+    class="hero hero-modern hero-bg"
+    style="--hero-image: url('https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?auto=format&fit=crop&w=1920&q=80');"
+  >
+    <div class="container hero-split" data-seq>
+      <div class="hero-copy" style="--i:0">
+        <p class="eyebrow">About us</p>
+        <h1 class="display" style="margin: 0 0 10px;">Where creativity meets speed — powered by AI, guided by people.</h1>
+        <p class="lede">
+          We blend human craft with automation to help brands go from idea to impact — faster, on-brand, and at scale.
+        </p>
+        <div class="hero-actions" style="margin-top: 14px;">
+          <a class="btn btn-primary" href="plans.html">View Plans</a>
+          <a class="btn btn-ghost" href="services.html">Explore Services</a>
+        </div>
+      </div>
+    </div>
+    <a class="scroll-indicator" href="#mission" aria-label="Scroll to content">
+      <i aria-hidden="true"></i> Scroll
+    </a>
+  </section>
+
+  <!-- Mission + Image -->
+  <section class="section" id="mission">
+    <div class="container two-col" data-seq>
+      <div class="col" style="--i:0">
+        <h2 class="section-title">Our mission</h2>
+        <p>
+          Help modern teams create high-quality creative at the speed of the internet. We combine design sense,
+          editorial craft, and AI to deliver consistent results across video, visuals, copy, and identity.
+        </p>
+        <ul class="checklist">
+          <li>Human-in-the-loop quality control</li>
+          <li>Brand-safe, consistent outputs</li>
+          <li>Fast revisions and clear communication</li>
+        </ul>
+      </div>
+      <div class="col media-card" style="--i:1">
+        <div style="aspect-ratio: 16/9; border-radius: 12px; overflow:hidden; border:1px solid rgba(255,255,255,.08);
+                    background: url('https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;">
+        </div>
+        <div class="stat-grid">
+          <div class="card-soft" style="border-radius:10px; padding:12px; text-align:center;">
+            <div style="font-size:24px; font-weight:800;" data-counter data-target="500">0</div>
+            <small class="muted">Projects</small>
+          </div>
+          <div class="card-soft" style="border-radius:10px; padding:12px; text-align:center;">
+            <div style="font-size:24px; font-weight:800;" data-counter data-target="48">0</div>
+            <small class="muted">Avg hours</small>
+          </div>
+          <div class="card-soft" style="border-radius:10px; padding:12px; text-align:center;">
+            <div style="font-size:24px; font-weight:800;" data-counter data-target="4.9">0</div>
+            <small class="muted">Rating</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values (accordion) -->
+  <section class="section alt">
+    <div class="container">
+      <h2 class="section-title">Values</h2>
+      <div class="accordion" data-accordion data-seq>
+        <details class="accordion-item luxe-border" open style="--i:0">
+          <summary class="accordion-header">
+            <span>Craft over hype</span>
+            <span class="chev" aria-hidden="true"></span>
+          </summary>
+          <div class="accordion-panel">
+            <p>We prioritize clarity, usefulness, and taste over trends. The work should serve your audience, not our reel.</p>
+          </div>
+        </details>
+        <details class="accordion-item luxe-border" style="--i:1">
+          <summary class="accordion-header">
+            <span>Transparency</span>
+            <span class="chev" aria-hidden="true"></span>
+          </summary>
+          <div class="accordion-panel">
+            <p>Clear scopes, honest timelines, predictable pricing, and communication you don’t have to chase.</p>
+          </div>
+        </details>
+        <details class="accordion-item luxe-border" style="--i:2">
+          <summary class="accordion-header">
+            <span>Iterate with purpose</span>
+            <span class="chev" aria-hidden="true"></span>
+          </summary>
+          <div class="accordion-panel">
+            <p>Every revision moves us closer to your goal. We keep feedback structured and outcomes measurable.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- How we work (timeline) -->
+  <section class="section">
+    <div class="container two-col" data-seq>
+      <div class="col" style="--i:0">
+        <h2 class="section-title">How we work</h2>
+        <ol class="timeline" data-seq style="--i:1">
+          <li style="--i:0"><span class="dot"></span><div class="content"><h3>Kickoff</h3><p>Align on goals, audience, and success metrics.</p></div></li>
+          <li style="--i:1"><span class="dot"></span><div class="content"><h3>Direction</h3><p>Lock in visual and verbal styles with moodboards and examples.</p></div></li>
+          <li style="--i:2"><span class="dot"></span><div class="content"><h3>Production</h3><p>Rapid iteration using AI + human QA for consistency and speed.</p></div></li>
+          <li style="--i:3"><span class="dot"></span><div class="content"><h3>Delivery</h3><p>On‑spec exports, source files, and templates for reuse.</p></div></li>
+        </ol>
+      </div>
+      <div class="col" style="--i:1">
+        <div class="card card-soft luxe-border">
+          <h3>Why teams choose us</h3>
+          <div class="features-grid" data-seq>
+            <div class="feature-card" style="--i:0"><div class="feature-icon">⚡</div><h4>Fast</h4><p>48h average on Pro, without sacrificing quality.</p></div>
+            <div class="feature-card" style="--i:1"><div class="feature-icon">🎯</div><h4>On‑brand</h4><p>We build brand profiles to keep outputs consistent.</p></div>
+            <div class="feature-card" style="--i:2"><div class="feature-icon">🔒</div><h4>Secure</h4><p>SLA/NDAs and private workflows for sensitive work.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team -->
+  <section class="section alt">
+    <div class="container">
+      <h2 class="section-title">Team</h2>
+      <div class="card-grid" data-seq>
+        <div class="card luxe-card" style="--i:0">
+          <h3>Alex — Creative Director</h3>
+          <p>Leads brand systems and motion. 10+ years across tech and media.</p>
+          <div class="mt"><a class="link-arrow" href="#" aria-disabled="true">LinkedIn</a></div>
+        </div>
+        <div class="card luxe-card" style="--i:1">
+          <h3>Sam — Head of Production</h3>
+          <p>Owns delivery ops, QA, and client success.</p>
+          <div class="mt"><a class="link-arrow" href="#" aria-disabled="true">LinkedIn</a></div>
+        </div>
+        <div class="card luxe-card" style="--i:2">
+          <h3>Maya — Lead Writer</h3>
+          <p>Editorial lead for web, product, and campaign copy.</p>
+          <div class="mt"><a class="link-arrow" href="#" aria-disabled="true">LinkedIn</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Inside Creatix (tabs) -->
+  <section class="section">
+    <div class="container" data-seq>
+      <h2 class="section-title" style="--i:0">Inside Creatix</h2>
+      <div class="tabs" data-tabs id="aboutTabs" style="--i:1">
+        <div class="tablist" role="tablist" aria-label="About tabs">
+          <button class="tab active" role="tab" aria-selected="true" data-tab-target="#tab-story">Our story</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab-target="#tab-culture">Culture</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab-target="#tab-careers">Careers</button>
+        </div>
+
+        <div class="tab-panels">
+          <div id="tab-story" class="tab-panel active" role="tabpanel">
+            <div class="two-col" data-seq>
+              <div class="col" style="--i:0">
+                <p>Founded to remove bottlenecks between ideas and execution. We’ve shipped hundreds of projects for startups and enterprises across product, marketing, and brand.</p>
+              </div>
+              <div class="col card luxe-border" style="--i:1">
+                <div style="aspect-ratio: 16/9; border-radius:12px; background:url('https://images.unsplash.com/photo-1497493292307-31c376b6e479?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat; border:1px solid rgba(255,255,255,.08);"></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab-culture" class="tab-panel" role="tabpanel">
+            <div class="two-col" data-seq>
+              <div class="col card card-soft" style="--i:0">
+                <h3>What we value day-to-day</h3>
+                <ul class="checklist">
+                  <li>Kind candor in feedback</li>
+                  <li>Bias to action</li>
+                  <li>Documentation over memory</li>
+                </ul>
+              </div>
+              <div class="col card card-soft" style="--i:1">
+                <h3>Remote-first</h3>
+                <p>Distributed across time zones with async collaboration. We design for focus, not meetings.</p>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab-careers" class="tab-panel" role="tabpanel">
+            <div class="card-grid" data-seq>
+              <div class="card" style="--i:0">
+                <h3>Motion Designer (Contract)</h3>
+                <p>3+ yrs; After Effects, Figma, brand systems, reels.</p>
+                <a class="link-arrow" href="#" aria-disabled="true">Apply</a>
+              </div>
+              <div class="card" style="--i:1">
+                <h3>Copywriter (Part-time)</h3>
+                <p>3+ yrs; web/product copy, scripts, social.</p>
+                <a class="link-arrow" href="#" aria-disabled="true">Apply</a>
+              </div>
+              <div class="card" style="--i:2">
+                <h3>Producer (Full-time)</h3>
+                <p>Client ops, QA, and delivery orchestration.</p>
+                <a class="link-arrow" href="#" aria-disabled="true">Apply</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>      
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="container cta-inner luxe-border" data-seq>
+      <h2 style="--i:0">Ready to create something great?</h2>
+      <p style="--i:1">Start with Pro, or chat with us about a custom plan.</p>
+      <div style="--i:2">
+        <a href="plans.html" class="btn btn-primary">Get Started</a>
+        <a href="contact.html" class="btn btn-accent">Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="brand">
+          <span class="brand-mark">✨</span>
+          <span class="brand-name">Creatix Studio</span>
+        </div>
+        <p>AI-powered creative services with human quality control. From concept to delivery, on-brand and on time.</p>
+        <form class="newsletter" action="#" onsubmit="event.preventDefault()">
+          <input type="email" placeholder="Your email" aria-label="Email for newsletter" required>
+          <button class="btn btn-primary" type="submit">Subscribe</button>
+        </form>
+        <div class="social">
+          <a href="#" aria-label="Twitter" title="Twitter">𝕏</a>
+          <a href="#" aria-label="LinkedIn" title="LinkedIn">in</a>
+          <a href="#" aria-label="YouTube" title="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="service-video-creation.html">Video Creation</a></li>
+          <li><a href="service-image-generation.html">Image Generation</a></li>
+          <li><a href="service-content-writing.html">Content Writing</a></li>
+          <li><a href="service-logo-generation.html">Logo Generation</a></li>
+          <li><a href="service-fashion-design.html">Fashion & Clothes</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="plans.html">Plans</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#" aria-disabled="true">Blog</a></li>
+          <li><a href="#" aria-disabled="true">Guides</a></li>
+          <li><a href="#" aria-disabled="true">Case Studies</a></li>
+          <li><a href="#" aria-disabled="true">Help Center</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© <span id="year"></span> Creatix Studio. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <!-- JS -->
+  <script src="assets/js/main.js?v=11"></script>
+
+  <!-- About-only enhancements: counters + sequenced reveal -->
+  <script>
+    (function () {
+      // Sequenced reveal
+      const groups = document.querySelectorAll('[data-seq]');
+      const setIndexVars = (group) => {
+        const kids = Array.from(group.children);
+        kids.forEach((el, i) => el.style.setProperty('--i', el.style.getPropertyValue('--i') || i));
+      };
+      groups.forEach(setIndexVars);
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              e.target.classList.add('in');
+              io.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.15 });
+        groups.forEach(g => io.observe(g));
+      } else {
+        groups.forEach(g => g.classList.add('in'));
+      }
+
+      // Animated counters
+      const els = document.querySelectorAll('[data-counter]');
+      if ('IntersectionObserver' in window && els.length) {
+        const format = (n) => {
+          const num = Number(n);
+          return (num >= 1000) ? (Math.round(num/100)/10) + 'k+' : n;
+        };
+        const animate = (el) => {
+          const target = parseFloat(el.getAttribute('data-target')) || 0;
+          const dur = 1200;
+          const start = performance.now();
+          const step = (t) => {
+            const p = Math.min(1, (t - start) / dur);
+            const val = (target * p).toFixed(target % 1 ? 1 : 0);
+            el.textContent = format(val);
+            if (p < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        };
+        const once = new WeakSet();
+        const io2 = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if (e.isIntersecting && !once.has(e.target)) {
+              once.add(e.target);
+              animate(e.target);
+            }
+          });
+        }, { threshold: 0.5 });
+        els.forEach(el => io2.observe(el));
+      }
+    })();
+  </script>
+</body>
+</html>

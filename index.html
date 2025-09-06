@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Creatix Studio — AI-Powered Creative Services</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="AI-powered creative studio for video creation, image generation, content writing, logo design, and fashion & clothing design.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=8">
+
+  <!-- Professional hero + timeline + new sections -->
+  <style>
+    :root {
+      --hero-mask-start: rgba(0,0,0,.65);
+      --hero-mask-end: rgba(0,0,0,.25);
+      --glass-surface: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.14);
+      --muted: rgba(255,255,255,0.85);
+    }
+
+    /* Header floats over hero with a soft gradient for contrast */
+    .site-header.header-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0));
+    }
+    .site-header.header-overlay .brand-name,
+    .site-header.header-overlay .brand-mark,
+    .site-header.header-overlay nav a,
+    .site-header.header-overlay .dropdown-toggle { color: #fff; }
+    .site-header.header-overlay .nav-toggle .bar { background: #fff; }
+    .site-header.header-overlay .nav-cta .btn { background: #fff; color: #111; }
+
+    /* Full-bleed, full-height hero */
+    .hero.hero-bg {
+      position: relative;
+      background-image: var(--hero-image);
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      min-height: 100vh;              /* desktop */
+      min-height: 100svh;             /* mobile safe */
+      min-height: 100dvh;             /* dynamic viewport */
+      display: flex;
+      align-items: center;
+      width: 100%;
+      margin: 0;
+      border-radius: 0;
+      isolation: isolate;
+      padding-top: 6rem; /* keep content clear of header */
+    }
+    .hero.hero-bg::before {
+      content: "";
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(180deg, var(--hero-mask-start) 0%, transparent 40%),
+        radial-gradient(90% 70% at 50% 30%, rgba(0,0,0,0.35), rgba(0,0,0,0.75));
+      z-index: 0;
+    }
+    .hero.hero-bg .container,
+    .hero.hero-bg .hero-split,
+    .hero.hero-bg .hero-copy { position: relative; z-index: 1; }
+
+    .hero-copy .eyebrow {
+      letter-spacing: normal;
+      text-transform: none;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: .5rem;
+      font-weight: 600;
+    }
+    .hero-copy .display { margin-bottom: .75rem; }
+    .hero-copy .lede { color: rgba(255,255,255,.9); max-width: 58ch; }
+
+    /* Scroll indicator */
+    .scroll-indicator {
+      position: absolute;
+      left: 50%; bottom: 1.25rem; transform: translateX(-50%);
+      color: rgba(255,255,255,0.8);
+      font-size: .9rem;
+      display: inline-flex; align-items: center; gap: .5rem;
+      z-index: 1;
+      opacity: .9;
+    }
+    .scroll-indicator i {
+      display: inline-block;
+      width: 10px; height: 16px;
+      border-radius: 6px;
+      border: 2px solid rgba(255,255,255,0.8);
+      position: relative;
+    }
+    .scroll-indicator i::after {
+      content: "";
+      position: absolute; left: 50%; top: 2px; transform: translateX(-50%);
+      width: 2px; height: 4px; background: rgba(255,255,255,0.85); border-radius: 2px;
+      animation: wheel 1.6s ease-in-out infinite;
+    }
+    @keyframes wheel {
+      0% { transform: translate(-50%, 0); opacity: 1; }
+      100% { transform: translate(-50%, 6px); opacity: 0; }
+    }
+
+    /* Mobile nav panel legibility */
+    @media (max-width: 900px) {
+      .site-header.header-overlay .nav-links {
+        background: rgba(0,0,0,0.75);
+        backdrop-filter: saturate(140%) blur(8px);
+      }
+      .site-header.header-overlay .nav-links a { color: #fff; }
+    }
+
+    /* Sequenced reveals */
+    [data-seq] > * {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1);
+      transition-delay: calc(var(--i, 0) * 90ms);
+      will-change: transform, opacity;
+    }
+    [data-seq].in > * { opacity: 1; transform: translateY(0); }
+
+    /* Pro "How it works" timeline cards */
+    .how-pro .section-title { margin-bottom: 1.25rem; }
+    .how-timeline {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 20px;
+      counter-reset: step;
+    }
+    .how-timeline::before {
+      content: "";
+      position: absolute; top: 42px; left: 10px; right: 10px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      pointer-events: none;
+    }
+    .how-step {
+      position: relative;
+      background: var(--glass-surface);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 24px 22px 22px;
+      backdrop-filter: blur(6px);
+      color: #e9eef2;
+      min-height: 180px;
+      overflow: hidden;
+    }
+    .how-step::before {
+      counter-increment: step;
+      content: counter(step, decimal-leading-zero);
+      position: absolute; top: 10px; left: 14px;
+      font-weight: 800; font-size: 12px; letter-spacing: .08em;
+      color: #9fe8df; opacity: .95;
+      background: rgba(159,232,223,.12);
+      border: 1px solid rgba(159,232,223,.45);
+      padding: 4px 8px; border-radius: 999px;
+    }
+    .how-step h3 { margin: 26px 0 8px; }
+    .how-step p { margin: 0; color: rgba(255,255,255,0.9); }
+
+    @media (max-width: 960px) {
+      .how-timeline { grid-template-columns: 1fr; }
+      .how-timeline::before { display: none; }
+    }
+
+    /* New: Plans preview (home) */
+    .pricing-grid {
+      display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px;
+    }
+    .pricing-card {
+      background: var(--glass-surface);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 20px; color: #fff;
+      display: grid; gap: 10px;
+    }
+    .pricing-card .price { font-size: 30px; font-weight: 800; }
+    .pricing-card .price span { font-size: 14px; color: var(--muted); }
+    .pricing-card.featured {
+      border-color: #fff;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    .pricing-card ul { margin: 6px 0 10px 18px; }
+
+    /* New: About teaser (two-col) */
+    .two-col {
+      display: grid; grid-template-columns: 1.1fr .9fr; gap: 24px; align-items: start;
+    }
+    .about-media {
+      background: var(--glass-surface);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px; padding: 10px;
+    }
+    .about-media .ph {
+      aspect-ratio: 16/9; border-radius: 10px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,.08);
+      background: url('https://images.unsplash.com/photo-1497493292307-31c376b6e479?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+    }
+
+    /* New: Contact teaser */
+    .methods { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+    .method {
+      background: var(--glass-surface);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px; padding: 16px; color: #fff;
+    }
+
+    @media (max-width: 980px) {
+      .pricing-grid, .methods { grid-template-columns: 1fr; }
+      .two-col { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header class="site-header header-overlay">
+    <div class="container nav">
+      <a href="index.html" class="brand" aria-label="Creatix Studio">
+        <span class="brand-mark">✨</span>
+        <span class="brand-name">Creatix Studio</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-controls="primaryNav" aria-expanded="false">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+      <nav>
+        <ul class="nav-links" id="primaryNav">
+          <li><a href="index.html" data-nav>Home</a></li>
+          <li><a href="about.html" data-nav>About Us</a></li>
+          <li class="dropdown">
+            <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="menu" aria-controls="servicesMenu">Services ▾</button>
+            <ul class="dropdown-menu" id="servicesMenu" role="menu">
+              <li role="none"><a role="menuitem" href="services.html">All Services</a></li>
+              <li role="none"><a role="menuitem" href="service-video-creation.html" data-jump="Video">Video Creation</a></li>
+              <li role="none"><a role="menuitem" href="service-image-generation.html" data-jump="Images">Image Generation</a></li>
+              <li role="none"><a role="menuitem" href="service-content-writing.html" data-jump="Content">Content Writing</a></li>
+              <li role="none"><a role="menuitem" href="service-logo-generation.html" data-jump="Logos">Logo Generation</a></li>
+              <li role="none"><a role="menuitem" href="service-fashion-design.html" data-jump="Fashion">Fashion & Clothes Design</a></li>
+            </ul>
+          </li>
+          <li><a href="plans.html" data-nav>Plans</a></li>
+          <li class="nav-cta"><a href="contact.html" class="btn btn-accent" data-nav>Contact Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero with full-height, full-width background image -->
+  <section
+    class="hero hero-modern hero-bg"
+    style="--hero-image: url('https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=1920&q=80');"
+  >
+    <div class="container hero-split">
+      <div class="hero-copy">
+        <p class="eyebrow">AI x Design</p>
+        <h1 class="display">Create a library of on‑brand content</h1>
+        <p class="lede">Launch videos, eye‑catching visuals, crisp copy, and scalable brand systems — crafted fast with human QA.</p>
+        <div class="hero-actions">
+          <a href="plans.html" class="btn btn-primary">Get Started</a>
+          <a href="#services" class="btn btn-ghost">Explore Services</a>
+        </div>
+      </div>
+    </div>
+    <a class="scroll-indicator" href="#services" aria-label="Scroll to services">
+      <i aria-hidden="true"></i> Scroll
+    </a>
+  </section>
+
+  <!-- Services -->
+  <section class="section" id="services">
+    <div class="container">
+      <h2 class="section-title">Services</h2>
+
+      <div class="chip-group" role="tablist" aria-label="Filter services">
+        <button class="chip active" role="tab" aria-selected="true" data-filter="Video">Video</button>
+        <button class="chip" role="tab" aria-selected="false" data-filter="Images">Images</button>
+        <button class="chip" role="tab" aria-selected="false" data-filter="Content">Content</button>
+        <button class="chip" role="tab" aria-selected="false" data-filter="Logos">Logos</button>
+        <button class="chip" role="tab" aria-selected="false" data-filter="Fashion">Fashion</button>
+      </div>
+
+      <div class="advanced-grid" id="servicesGrid" data-seq>
+        <!-- Video -->
+        <a class="card card-hover luxe-card svc-card" href="service-video-creation.html" data-cat="Video">
+          <div class="badge">Trending</div>
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Short-form & Reels</h3>
+          <p>Platform-native cuts, captions, hooks, and pacing for TikTok/IG/YT.</p>
+          <div class="svc-footer"><span class="pill">48h avg</span><span class="link-arrow">Learn more</span></div>
+        </a>
+        <a class="card card-hover luxe-card svc-card" href="service-video-creation.html" data-cat="Video">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Product Demos</h3>
+          <p>Clear storytelling with callouts, supers, and crisp motion design.</p>
+          <div class="svc-footer"><span class="pill">3 ratios</span><span class="link-arrow">Learn more</span></div>
+        </a>
+        <a class="card card-hover luxe-card svc-card" href="service-video-creation.html" data-cat="Video">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Explainers</h3>
+          <p>Script, VO, sound design, and animation for concept clarity.</p>
+          <div class="svc-footer"><span class="pill">Script + VO</span><span class="link-arrow">Learn more</span></div>
+        </a>
+
+        <!-- Images -->
+        <a class="card card-hover luxe-card svc-card" href="service-image-generation.html" data-cat="Images">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Campaign Visuals</h3>
+          <p>Art-directed sets, color palettes, and consistent brand styles.</p>
+          <div class="svc-footer"><span class="pill">Styled</span><span class="link-arrow">Learn more</span></div>
+        </a>
+        <a class="card card-hover luxe-card svc-card" href="service-image-generation.html" data-cat="Images">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Product Renders</h3>
+          <p>Photorealistic composites, lighting, and scene iterations.</p>
+          <div class="svc-footer"><span class="pill">Photoreal</span><span class="link-arrow">Learn more</span></div>
+        </a>
+        <a class="card card-hover luxe-card svc-card" href="service-image-generation.html" data-cat="Images">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Asset Packs</h3>
+          <p>Reusable backgrounds, textures, and social-ready templates.</p>
+          <div class="svc-footer"><span class="pill">Reusable</span><span class="link-arrow">Learn more</span></div>
+        </a>
+
+        <!-- Content -->
+        <a class="card card-hover luxe-card svc-card" href="service-content-writing.html" data-cat="Content">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Web & Product Copy</h3>
+          <p>Clear messaging frameworks aligned to positioning and goals.</p>
+          <div class="svc-footer"><span class="pill">Conversion</span><span class="link-arrow">Learn more</span></div>
+        </a>
+        <a class="card card-hover luxe-card svc-card" href="service-content-writing.html" data-cat="Content">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>SEO Articles</h3>
+          <p>Topic strategy, outlines, and on-page SEO baked in.</p>
+          <div class="svc-footer"><span class="pill">SEO</span><span class="link-arrow">Learn more</span></div>
+        </a>
+        <a class="card card-hover luxe-card svc-card" href="service-content-writing.html" data-cat="Content">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1557800636-894a64c1696f?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Scripts & Ads</h3>
+          <p>Scroll-stopping hooks for paid and organic distribution.</p>
+          <div class="svc-footer"><span class="pill">Hooks</span><span class="link-arrow">Learn more</span></div>
+        </a>
+
+        <!-- Logos -->
+        <a class="card card-hover luxe-card svc-card" href="service-logo-generation.html" data-cat="Logos">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Logo Systems</h3>
+          <p>Primary/secondary marks, icons, and usage guidance.</p>
+          <div class="svc-footer"><span class="pill">Brand kit</span><span class="link-arrow">Learn more</span></div>
+        </a>
+        <a class="card card-hover luxe-card svc-card" href="service-logo-generation.html" data-cat="Logos">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Visual Identity</h3>
+          <p>Color, type, grids, and components for scale.</p>
+          <div class="svc-footer"><span class="pill">System</span><span class="link-arrow">Learn more</span></div>
+        </a>
+        <a class="card card-hover luxe-card svc-card" href="service-logo-generation.html" data-cat="Logos">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1529336953121-4e0b0b77e3f1?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Brand Guidelines</h3>
+          <p>Do’s/don’ts and templates for consistent execution.</p>
+          <div class="svc-footer"><span class="pill">Guide</span><span class="link-arrow">Learn more</span></div>
+        </a>
+
+        <!-- Fashion -->
+        <a class="card card-hover luxe-card svc-card" href="service-fashion-design.html" data-cat="Fashion">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1520975661595-6453be3f7070?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Capsule Collections</h3>
+          <p>From sketch to spec sheets for quick production.</p>
+          <div class="svc-footer"><span class="pill">7–10d</span><span class="link-arrow">Learn more</span></div>
+        </a>
+        <a class="card card-hover luxe-card svc-card" href="service-fashion-design.html" data-cat="Fashion">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1520975592217-13f19ff37e77?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Patterns & Materials</h3>
+          <p>Fabric selections, patterns, and colorways.</p>
+          <div class="svc-footer"><span class="pill">Tech packs</span><span class="link-arrow">Learn more</span></div>
+        </a>
+        <a class="card card-hover luxe-card svc-card" href="service-fashion-design.html" data-cat="Fashion">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Labels & Packaging</h3>
+          <p>Retail-ready tags, labels, and unboxing systems.</p>
+          <div class="svc-footer"><span class="pill">Retail</span><span class="link-arrow">Learn more</span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Plans (preview) -->
+  <section class="section" id="plans">
+    <div class="container">
+      <h2 class="section-title">Plans</h2>
+      <div class="pricing-grid" data-seq>
+        <div class="pricing-card" style="--i:0">
+          <h3>Starter</h3>
+          <p class="price">$199 <span>/mo</span></p>
+          <ul>
+            <li>Up to 5 requests/mo</li>
+            <li>~3 business day delivery</li>
+            <li>1 brand profile</li>
+          </ul>
+          <a class="btn btn-outline" href="plans.html">Choose Starter</a>
+        </div>
+        <div class="pricing-card featured" style="--i:1">
+          <div class="badge">Most popular</div>
+          <h3>Pro</h3>
+          <p class="price">$499 <span>/mo</span></p>
+          <ul>
+            <li>Unlimited requests</li>
+            <li>~48h average delivery</li>
+            <li>2 brand profiles</li>
+          </ul>
+          <a class="btn btn-primary" href="plans.html">Choose Pro</a>
+        </div>
+        <div class="pricing-card" style="--i:2">
+          <h3>Enterprise</h3>
+          <p class="price">Custom</p>
+          <ul>
+            <li>Dedicated team</li>
+            <li>SLAs, NDAs, SSO</li>
+            <li>Custom workflows</li>
+          </ul>
+          <a class="btn btn-outline" href="plans.html">Talk to sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works (professional timeline) -->
+  <section class="section how-pro">
+    <div class="container">
+      <h2 class="section-title">How it works</h2>
+      <div class="how-timeline" data-seq>
+        <div class="how-step" style="--i:0">
+          <h3>Kickoff</h3>
+          <p>Share your goals, brand assets, audience, and references. We align on scope, tone, and deliverables.</p>
+        </div>
+        <div class="how-step" style="--i:1">
+          <h3>Create</h3>
+          <p>Rapid iterations with human QA. We check brand safety, accuracy, and polish across every draft.</p>
+        </div>
+        <div class="how-step" style="--i:2">
+          <h3>Deliver</h3>
+          <p>Final files in your formats, plus reusable templates and source files for scale.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Us (teaser) -->
+  <section class="section" id="about">
+    <div class="container two-col" data-seq>
+      <div class="col" style="--i:0">
+        <h2 class="section-title">About us</h2>
+        <p>We blend human craft with automation to help brands go from idea to impact — faster, on‑brand, and at scale. Every deliverable goes through human QA so you get speed without sacrificing taste.</p>
+        <ul class="checklist">
+          <li>Human-in-the-loop quality control</li>
+          <li>Brand-safe, consistent outputs</li>
+          <li>Reusable systems for scale</li>
+        </ul>
+        <a class="btn btn-ghost" href="about.html">Meet the team</a>
+      </div>
+      <div class="col about-media" style="--i:1">
+        <div class="ph" aria-hidden="true"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact (teaser) -->
+  <section class="section alt" id="contact">
+    <div class="container">
+      <h2 class="section-title">Contact us</h2>
+      <div class="methods" data-seq>
+        <div class="method" style="--i:0">
+          <h3>Email</h3>
+          <p><a href="mailto:hello@creatix.example">hello@creatix.example</a></p>
+          <small>We reply within one business day.</small>
+        </div>
+        <div class="method" style="--i:1">
+          <h3>Book a call</h3>
+          <p><a href="contact.html">Schedule a discovery call</a></p>
+          <small>30‑minute intro to align on scope.</small>
+        </div>
+        <div class="method" style="--i:2">
+          <h3>Start a project</h3>
+          <p><a class="btn btn-primary btn-sm" href="contact.html">Send a brief</a></p>
+          <small>Share goals, references, and timelines.</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQs (reduced to essentials) -->
+  <section class="section alt" id="faq">
+    <div class="container">
+      <h2 class="section-title">Frequently asked questions</h2>
+      <div class="accordion" data-accordion-animated data-seq>
+        <details style="--i:0">
+          <summary class="accordion-header">
+            <span>What’s included in each service?</span>
+            <i class="chev" aria-hidden="true"></i>
+          </summary>
+          <div class="accordion-panel">
+            <div class="accordion-panel-inner">
+              <p>Every request includes creative direction, production, and QA. Video: edits, motion, sound, captions, exports. Images: prompts, styling, retouching. Content: research, outline, on‑brand revisions.</p>
+            </div>
+          </div>
+        </details>
+
+        <details style="--i:1">
+          <summary class="accordion-header">
+            <span>How fast do you deliver?</span>
+            <i class="chev" aria-hidden="true"></i>
+          </summary>
+          <div class="accordion-panel"><div class="accordion-panel-inner">
+            <p>Pro averages ~48 hours per request. Starter is ~3 business days. Enterprise comes with custom SLAs and priority queues.</p>
+          </div></div>
+        </details>
+
+        <details style="--i:2">
+          <summary class="accordion-header">
+            <span>How do revisions work?</span>
+            <i class="chev" aria-hidden="true"></i>
+          </summary>
+          <div class="accordion-panel"><div class="accordion-panel-inner">
+            <p>Most requests include 2–3 rounds. We align creative direction up front to minimize back‑and‑forth.</p>
+          </div></div>
+        </details>
+
+        <details style="--i:3">
+          <summary class="accordion-header">
+            <span>Do we own the final files?</span>
+            <i class="chev" aria-hidden="true"></i>
+          </summary>
+          <div class="accordion-panel"><div class="accordion-panel-inner">
+            <p>Yes — full commercial rights and source files (project files, working docs, exports) where applicable.</p>
+          </div></div>
+        </details>
+
+        <details style="--i:4">
+          <summary class="accordion-header">
+            <span>How do we get started?</span>
+            <i class="chev" aria-hidden="true"></i>
+          </summary>
+          <div class="accordion-panel"><div class="accordion-panel-inner">
+            <p>Pick a plan and share your first brief. Prefer a custom setup? Contact us and we’ll tailor scope, SLAs, and pricing.</p>
+          </div></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">What clients say</h2>
+      <div class="slider" data-slider>
+        <button class="slider-btn prev" aria-label="Previous">‹</button>
+        <div class="slides">
+          <article class="t-card slide">
+            <div class="stars">★★★★★</div>
+            <p>“Creatix nailed our launch assets. Motion and edits were spotless.”</p>
+            <div class="t-user"><div class="avatar">AM</div><div><strong>Avery M.</strong><div>Marketing Lead, FintechCo</div></div></div>
+          </article>
+          <article class="t-card slide">
+            <div class="stars">★★★★★</div>
+            <p>“We iterated fast without bottlenecks — perfect blend of AI speed and taste.”</p>
+            <div class="t-user"><div class="avatar">JR</div><div><strong>Jonas R.</strong><div>Founder, DTC Apparel</div></div></div>
+          </article>
+          <article class="t-card slide">
+            <div class="stars">★★★★★</div>
+            <p>“Our new logo system elevated everything from decks to socials.”</p>
+            <div class="t-user"><div class="avatar">PS</div><div><strong>Priya S.</strong><div>COO, SaaSHub</div></div></div>
+          </article>
+          <article class="t-card slide">
+            <div class="stars">★★★★★</div>
+            <p>“Turnaround was insane — 48h and our ads were live and converting.”</p>
+            <div class="t-user"><div class="avatar">ML</div><div><strong>Marcos L.</strong><div>Growth, OrbitPay</div></div></div>
+          </article>
+          <article class="t-card slide">
+            <div class="stars">★★★★★</div>
+            <p>“Consistent brand visuals across every touchpoint. Huge time saver.”</p>
+            <div class="t-user"><div class="avatar">KD</div><div><strong>Kara D.</strong><div>Brand Lead, NorthPeak</div></div></div>
+          </article>
+        </div>
+        <button class="slider-btn next" aria-label="Next">›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="container cta-inner luxe-border">
+      <h2>Ready to create something great?</h2>
+      <p>Start with Pro, or chat with us about a custom plan.</p>
+      <div>
+        <a href="plans.html" class="btn btn-primary">Get Started</a>
+        <a href="contact.html" class="btn btn-accent">Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="brand">
+          <span class="brand-mark">✨</span>
+          <span class="brand-name">Creatix Studio</span>
+        </div>
+        <p>AI-powered creative services with human quality control. From concept to delivery, on-brand and on time.</p>
+        <form class="newsletter" action="#" onsubmit="event.preventDefault()">
+          <input type="email" placeholder="Your email" aria-label="Email for newsletter" required>
+          <button class="btn btn-primary" type="submit">Subscribe</button>
+        </form>
+        <div class="social">
+          <a href="#" aria-label="Twitter" title="Twitter">𝕏</a>
+          <a href="#" aria-label="LinkedIn" title="LinkedIn">in</a>
+          <a href="#" aria-label="YouTube" title="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services" data-jump="Video">Video Creation</a></li>
+          <li><a href="#services" data-jump="Images">Image Generation</a></li>
+          <li><a href="#services" data-jump="Content">Content Writing</a></li>
+          <li><a href="#services" data-jump="Logos">Logo Generation</a></li>
+          <li><a href="#services" data-jump="Fashion">Fashion & Clothes</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="plans.html">Plans</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#" aria-disabled="true">Blog</a></li>
+          <li><a href="#" aria-disabled="true">Guides</a></li>
+          <li><a href="#" aria-disabled="true">Case Studies</a></li>
+          <li><a href="#" aria-disabled="true">Help Center</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© <span id="year"></span> Creatix Studio. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <!-- Chatbot Agent -->
+  <div class="chatbot" id="chatbot">
+    <button class="chatbot-toggle" id="chatbotToggle" aria-expanded="false" aria-controls="chatbotWindow">💬</button>
+    <div class="chatbot-window" id="chatbotWindow" aria-live="polite" aria-label="Chat with Creatix Assistant">
+      <div class="chatbot-header">
+        <div class="h-left"><span class="dot"></span><strong>Creatix Assistant</strong></div>
+        <button class="close" id="chatbotClose" aria-label="Close chat">✕</button>
+      </div>
+      <div class="chatbot-messages" id="chatbotMessages">
+        <div class="msg bot">Hi! I’m your Creatix assistant. Ask me about services, plans, or delivery times.</div>
+      </div>
+      <form class="chatbot-input" id="chatbotForm">
+        <input type="text" id="chatbotText" placeholder="Type your message..." aria-label="Message">
+        <button class="btn btn-primary" type="submit">Send</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="main.js?v=8"></script>
+  <script src="chatbot.js"></script>
+
+  <!-- Small script to trigger sequenced reveals on scroll (optional if main.js already handles it) -->
+  <script>
+    (function() {
+      const groups = document.querySelectorAll('[data-seq]');
+      const setIndex = g => Array.from(g.children).forEach((el,i)=>{ if(!el.style.getPropertyValue('--i')) el.style.setProperty('--i', i); });
+      groups.forEach(setIndex);
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries)=>{
+          entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+        }, { threshold: 0.15 });
+        groups.forEach(g=>io.observe(g));
+      } else {
+        groups.forEach(g=>g.classList.add('in'));
+      }
+    })();
+  </script>
+</body>
+</html>

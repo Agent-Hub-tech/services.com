@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Services — Creatix Studio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="All services from Creatix Studio — Video, Images, Content, Logos, Fashion. Fast, on-brand, and quality-checked.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=9">
+
+  <!-- Hero overlay + full-bleed 100vh background -->
+  <style>
+    :root {
+      --hero-mask-start: rgba(0,0,0,.65);
+      --hero-mask-end: rgba(0,0,0,.25);
+    }
+
+    /* Header overlays hero for better visual impact */
+    .site-header.header-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0));
+    }
+    .site-header.header-overlay .brand-name,
+    .site-header.header-overlay .brand-mark,
+    .site-header.header-overlay nav a,
+    .site-header.header-overlay .dropdown-toggle { color: #fff; }
+    .site-header.header-overlay .nav-toggle .bar { background: #fff; }
+    .site-header.header-overlay .nav-cta .btn { background: #fff; color: #111; }
+
+    /* Full-bleed, full-height hero with background image */
+    .hero.hero-bg {
+      position: relative;
+      background-image: var(--hero-image);
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      min-height: 100vh;
+      min-height: 100svh;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      margin: 0;
+      border-radius: 0;
+      isolation: isolate;
+      padding-top: 6rem; /* keep content clear of header */
+    }
+    .hero.hero-bg::before {
+      content: "";
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(180deg, var(--hero-mask-start) 0%, transparent 40%),
+        radial-gradient(90% 70% at 50% 30%, rgba(0,0,0,0.35), rgba(0,0,0,0.75));
+      z-index: 0;
+    }
+    .hero.hero-bg .container,
+    .hero.hero-bg .hero-split,
+    .hero.hero-bg .hero-copy { position: relative; z-index: 1; }
+
+    .hero-copy .eyebrow {
+      letter-spacing: normal;
+      text-transform: none;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: .5rem;
+      font-weight: 600;
+    }
+
+    /* Mobile nav legibility when opened */
+    @media (max-width: 900px) {
+      .site-header.header-overlay .nav-links {
+        background: rgba(0,0,0,0.75);
+        backdrop-filter: saturate(140%) blur(8px);
+      }
+      .site-header.header-overlay .nav-links a { color: #fff; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header / Navigation (overlayed on hero) -->
+  <header class="site-header header-overlay">
+    <div class="container nav">
+      <a href="index.html" class="brand" aria-label="Creatix Studio">
+        <span class="brand-mark">✨</span>
+        <span class="brand-name">Creatix Studio</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-controls="primaryNav" aria-expanded="false">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+      <nav>
+        <ul class="nav-links" id="primaryNav">
+          <li><a href="index.html" data-nav>Home</a></li>
+          <li><a href="about.html" data-nav>About Us</a></li>
+          <li class="dropdown">
+            <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="menu" aria-controls="servicesMenu">Services ▾</button>
+            <ul class="dropdown-menu" id="servicesMenu" role="menu">
+              <li role="none"><a role="menuitem" href="#services">All Services</a></li>
+              <li role="none"><a role="menuitem" href="#services" data-jump="Video">Video Creation</a></li>
+              <li role="none"><a role="menuitem" href="#services" data-jump="Images">Image Generation</a></li>
+              <li role="none"><a role="menuitem" href="#services" data-jump="Content">Content Writing</a></li>
+              <li role="none"><a role="menuitem" href="#services" data-jump="Logos">Logo Generation</a></li>
+              <li role="none"><a role="menuitem" href="#services" data-jump="Fashion">Fashion & Clothes Design</a></li>
+            </ul>
+          </li>
+          <li><a href="plans.html" data-nav>Plans</a></li>
+          <li class="nav-cta"><a href="contact.html" class="btn btn-accent" data-nav>Contact Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero with services-related background image -->
+  <section
+    class="hero hero-modern hero-bg"
+    style="--hero-image: url('https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=1920&q=80');"
+  >
+    <div class="container hero-split">
+      <div class="hero-copy">
+        <p class="eyebrow">AI x Design</p>
+        <h1 class="display">Everything you need to produce at scale</h1>
+        <p class="lede">Short‑form videos, photoreal images, crisp copy, distinctive logos, and apparel design — delivered fast with human QA.</p>
+        <div class="hero-actions">
+          <a href="#services" class="btn btn-primary">Explore Services</a>
+          <a href="plans.html" class="btn btn-ghost">View Plans</a>
+        </div>
+        <!-- Removed stats + illustration to keep the hero clean and professional -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="section" id="services">
+    <div class="container">
+      <!-- Services grid (single grid, no extras; each card has 'Add' + 'Quick view') -->
+      <div class="advanced-grid" id="servicesGrid" data-seq>
+        <!-- Video -->
+        <article class="card card-hover luxe-card svc-card selectable"
+          data-cat="Video" data-service="Short-form & Reels"
+          data-name="Short-form & Reels" data-tags="short form reels tiktok instagram youtube captions motion"
+          data-img="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1200&auto=format&fit=crop"
+          data-time="48" data-pop="98">
+          <div class="badge">Trending</div>
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Short-form & Reels</h3>
+          <p>Platform‑native cuts, captions, hooks, and pacing for TikTok/IG/YT.</p>
+          <div class="svc-footer">
+            <span class="pill">48h avg</span>
+            <div class="svc-actions">
+              <button class="btn btn-outline btn-sm" type="button" data-quick>Quick view</button>
+              <button class="btn btn-primary btn-sm" type="button" data-select>Add</button>
+              <a class="link-arrow" href="service-video-creation.html">Learn more</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card card-hover luxe-card svc-card selectable"
+          data-cat="Video" data-service="Product Demos" data-name="Product Demos"
+          data-tags="product demo software demo feature overview motion"
+          data-img="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop"
+          data-time="72" data-pop="91">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Product Demos</h3>
+          <p>Clear storytelling with callouts, supers, and crisp motion design.</p>
+          <div class="svc-footer">
+            <span class="pill">3 ratios</span>
+            <div class="svc-actions">
+              <button class="btn btn-outline btn-sm" type="button" data-quick>Quick view</button>
+              <button class="btn btn-primary btn-sm" type="button" data-select>Add</button>
+              <a class="link-arrow" href="service-video-creation.html">Learn more</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card card-hover luxe-card svc-card selectable"
+          data-cat="Video" data-service="Explainers" data-name="Explainers"
+          data-tags="explainer animation script voiceover sound design"
+          data-img="https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1200&auto=format&fit=crop"
+          data-time="96" data-pop="88">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Explainers</h3>
+          <p>Script, VO, sound design, and animation for concept clarity.</p>
+          <div class="svc-footer">
+            <span class="pill">Script + VO</span>
+            <div class="svc-actions">
+              <button class="btn btn-outline btn-sm" type="button" data-quick>Quick view</button>
+              <button class="btn btn-primary btn-sm" type="button" data-select>Add</button>
+              <a class="link-arrow" href="service-video-creation.html">Learn more</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Images -->
+        <article class="card card-hover luxe-card svc-card selectable"
+          data-cat="Images" data-service="Campaign Visuals" data-name="Campaign Visuals"
+          data-tags="campaign visuals art direction set design style frames"
+          data-img="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop"
+          data-time="72" data-pop="92">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Campaign Visuals</h3>
+          <p>Art‑directed sets, color palettes, and consistent brand styles.</p>
+          <div class="svc-footer">
+            <span class="pill">Styled</span>
+            <div class="svc-actions">
+              <button class="btn btn-outline btn-sm" type="button" data-quick>Quick view</button>
+              <button class="btn btn-primary btn-sm" type="button" data-select>Add</button>
+              <a class="link-arrow" href="service-image-generation.html">Learn more</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card card-hover luxe-card svc-card selectable"
+          data-cat="Images" data-service="Product Renders" data-name="Product Renders"
+          data-tags="renders product photoreal composite lighting 3d"
+          data-img="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1200&auto=format&fit=crop"
+          data-time="72" data-pop="95">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Product Renders</h3>
+          <p>Photorealistic composites, lighting, and scene iterations.</p>
+          <div class="svc-footer">
+            <span class="pill">Photoreal</span>
+            <div class="svc-actions">
+              <button class="btn btn-outline btn-sm" type="button" data-quick>Quick view</button>
+              <button class="btn btn-primary btn-sm" type="button" data-select>Add</button>
+              <a class="link-arrow" href="service-image-generation.html">Learn more</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card card-hover luxe-card svc-card selectable"
+          data-cat="Images" data-service="Asset Packs" data-name="Asset Packs"
+          data-tags="assets backgrounds textures templates social"
+          data-img="https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1200&auto=format&fit=crop"
+          data-time="48" data-pop="86">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Asset Packs</h3>
+          <p>Reusable backgrounds, textures, and social‑ready templates.</p>
+          <div class="svc-footer">
+            <span class="pill">Reusable</span>
+            <div class="svc-actions">
+              <button class="btn btn-outline btn-sm" type="button" data-quick>Quick view</button>
+              <button class="btn btn-primary btn-sm" type="button" data-select>Add</button>
+              <a class="link-arrow" href="service-image-generation.html">Learn more</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Content -->
+        <article class="card card-hover luxe-card svc-card selectable"
+          data-cat="Content" data-service="Web & Product Copy" data-name="Web & Product Copy"
+          data-tags="copywriting product copy landing pages ux writing"
+          data-img="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1200&auto=format&fit=crop"
+          data-time="72" data-pop="89">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Web & Product Copy</h3>
+          <p>Clear messaging frameworks aligned to positioning and goals.</p>
+          <div class="svc-footer">
+            <span class="pill">Conversion</span>
+            <div class="svc-actions">
+              <button class="btn btn-outline btn-sm" type="button" data-quick>Quick view</button>
+              <button class="btn btn-primary btn-sm" type="button" data-select>Add</button>
+              <a class="link-arrow" href="service-content-writing.html">Learn more</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card card-hover luxe-card svc-card selectable"
+          data-cat="Content" data-service="SEO Articles" data-name="SEO Articles"
+          data-tags="seo content articles growth topical authority"
+          data-img="https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=1200&auto=format&fit=crop"
+          data-time="96" data-pop="90">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>SEO Articles</h3>
+          <p>Topic strategy, outlines, and on-page SEO baked in.</p>
+          <div class="svc-footer">
+            <span class="pill">SEO</span>
+            <div class="svc-actions">
+              <button class="btn btn-outline btn-sm" type="button" data-quick>Quick view</button>
+              <button class="btn btn-primary btn-sm" type="button" data-select>Add</button>
+              <a class="link-arrow" href="service-content-writing.html">Learn more</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card card-hover luxe-card svc-card selectable"
+          data-cat="Content" data-service="Scripts & Ads" data-name="Scripts & Ads"
+          data-tags="ads scripts hooks paid social copy"
+          data-img="https://images.unsplash.com/photo-1557800636-894a64c1696f?q=80&w=1200&auto=format&fit=crop"
+          data-time="48" data-pop="87">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1557800636-894a64c1696f?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Scripts & Ads</h3>
+          <p>Scroll‑stopping hooks for paid and organic distribution.</p>
+          <div class="svc-footer">
+            <span class="pill">Hooks</span>
+            <div class="svc-actions">
+              <button class="btn btn-outline btn-sm" type="button" data-quick>Quick view</button>
+              <button class="btn btn-primary btn-sm" type="button" data-select>Add</button>
+              <a class="link-arrow" href="service-content-writing.html">Learn more</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Logos -->
+        <article class="card card-hover luxe-card svc-card selectable"
+          data-cat="Logos" data-service="Logo Systems" data-name="Logo Systems"
+          data-tags="logos primary secondary icons brand kit"
+          data-img="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1200&auto=format&fit=crop"
+          data-time="120" data-pop="88">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Logo Systems</h3>
+          <p>Primary/secondary marks, icons, and usage guidance.</p>
+          <div class="svc-footer">
+            <span class="pill">Brand kit</span>
+            <div class="svc-actions">
+              <button class="btn btn-outline btn-sm" type="button" data-quick>Quick view</button>
+              <button class="btn btn-primary btn-sm" type="button" data-select>Add</button>
+              <a class="link-arrow" href="service-logo-generation.html">Learn more</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card card-hover luxe-card svc-card selectable"
+          data-cat="Logos" data-service="Visual Identity" data-name="Visual Identity"
+          data-tags="visual identity color typography grids components"
+          data-img="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=1200&auto=format&fit=crop"
+          data-time="168" data-pop="84">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Visual Identity</h3>
+          <p>Color, type, grids, and components for scale.</p>
+          <div class="svc-footer">
+            <span class="pill">System</span>
+            <div class="svc-actions">
+              <button class="btn btn-outline btn-sm" type="button" data-quick>Quick view</button>
+              <button class="btn btn-primary btn-sm" type="button" data-select>Add</button>
+              <a class="link-arrow" href="service-logo-generation.html">Learn more</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card card-hover luxe-card svc-card selectable"
+          data-cat="Logos" data-service="Brand Guidelines" data-name="Brand Guidelines"
+          data-tags="brand guidelines templates dos donts rules"
+          data-img="https://images.unsplash.com/photo-1529336953121-4e0b0b77e3f1?q=80&w=1200&auto=format&fit=crop"
+          data-time="96" data-pop="82">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1529336953121-4e0b0b77e3f1?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Brand Guidelines</h3>
+          <p>Do’s/don’ts and templates for consistent execution.</p>
+          <div class="svc-footer">
+            <span class="pill">Guide</span>
+            <div class="svc-actions">
+              <button class="btn btn-outline btn-sm" type="button" data-quick>Quick view</button>
+              <button class="btn btn-primary btn-sm" type="button" data-select>Add</button>
+              <a class="link-arrow" href="service-logo-generation.html">Learn more</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Fashion -->
+        <article class="card card-hover luxe-card svc-card selectable"
+          data-cat="Fashion" data-service="Capsule Collections" data-name="Capsule Collections"
+          data-tags="fashion capsule collection sketch spec sheets"
+          data-img="https://images.unsplash.com/photo-1520975661595-6453be3f7070?q=80&w=1200&auto=format&fit=crop"
+          data-time="168" data-pop="83">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1520975661595-6453be3f7070?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Capsule Collections</h3>
+          <p>From sketch to spec sheets for quick production.</p>
+          <div class="svc-footer">
+            <span class="pill">7–10d</span>
+            <div class="svc-actions">
+              <button class="btn btn-outline btn-sm" type="button" data-quick>Quick view</button>
+              <button class="btn btn-primary btn-sm" type="button" data-select>Add</button>
+              <a class="link-arrow" href="service-fashion-design.html">Learn more</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card card-hover luxe-card svc-card selectable"
+          data-cat="Fashion" data-service="Patterns & Materials" data-name="Patterns & Materials"
+          data-tags="patterns materials fabric selections colorways"
+          data-img="https://images.unsplash.com/photo-1520975592217-13f19ff37e77?q=80&w=1200&auto=format&fit=crop"
+          data-time="120" data-pop="80">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1520975592217-13f19ff37e77?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Patterns & Materials</h3>
+          <p>Fabric selections, patterns, and colorways.</p>
+          <div class="svc-footer">
+            <span class="pill">Tech packs</span>
+            <div class="svc-actions">
+              <button class="btn btn-outline btn-sm" type="button" data-quick>Quick view</button>
+              <button class="btn btn-primary btn-sm" type="button" data-select>Add</button>
+              <a class="link-arrow" href="service-fashion-design.html">Learn more</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card card-hover luxe-card svc-card selectable"
+          data-cat="Fashion" data-service="Labels & Packaging" data-name="Labels & Packaging"
+          data-tags="labels packaging retail tags unboxing"
+          data-img="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=1200&auto=format&fit=crop"
+          data-time="96" data-pop="78">
+          <div class="svc-thumb" style="background-image:url('https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=1200&auto=format&fit=crop');"></div>
+          <h3>Labels & Packaging</h3>
+          <p>Retail‑ready tags, labels, and unboxing systems.</p>
+          <div class="svc-footer">
+            <span class="pill">Retail</span>
+            <div class="svc-actions">
+              <button class="btn btn-outline btn-sm" type="button" data-quick>Quick view</button>
+              <button class="btn btn-primary btn-sm" type="button" data-select>Add</button>
+              <a class="link-arrow" href="service-fashion-design.html">Learn more</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values (professional cards + sequenced) -->
+  <section class="section alt" id="values">
+    <div class="container">
+      <h2 class="section-title">Why choose Creatix</h2>
+      <div class="value-grid" data-seq>
+        <div class="value-card">
+          <div class="value-icon">⚡</div>
+          <h3>Speed without the chaos</h3>
+          <p>48h average on Pro. We ship fast and keep feedback structured.</p>
+          <ul class="mini-list">
+            <li>Clear delivery windows</li>
+            <li>Async updates</li>
+          </ul>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">👁️</div>
+          <h3>Taste + QA</h3>
+          <p>Human review for every deliverable. Zero off‑brand surprises.</p>
+          <ul class="mini-list">
+            <li>Creative direction</li>
+            <li>QC checklist</li>
+          </ul>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🎯</div>
+          <h3>On‑brand, every time</h3>
+          <p>We build reusable templates so every asset speaks your brand.</p>
+          <ul class="mini-list">
+            <li>Voice & tone guides</li>
+            <li>Reusable systems</li>
+          </ul>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">📈</div>
+          <h3>Scalable workflow</h3>
+          <p>Request queues, status tracking, and multi‑brand support.</p>
+          <ul class="mini-list">
+            <li>Multi‑request handling</li>
+            <li>Custom SLAs (Enterprise)</li>
+          </ul>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">💳</div>
+          <h3>Transparent pricing</h3>
+          <p>Flat monthly plans. Pause or cancel anytime.</p>
+          <ul class="mini-list">
+            <li>No hidden fees</li>
+            <li>Usage rights included</li>
+          </ul>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🔒</div>
+          <h3>Secure & private</h3>
+          <p>We sign NDAs and keep your data and assets protected.</p>
+          <ul class="mini-list">
+            <li>NDA on request</li>
+            <li>Private links only</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Toolbelt / Stack -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Toolbelt</h2>
+      <div class="marquee" aria-label="Tools we use">
+        <div class="marquee-track">
+          <span class="brand-tag">Premiere Pro</span>
+          <span class="brand-tag">After Effects</span>
+          <span class="brand-tag">Figma</span>
+          <span class="brand-tag">Photoshop</span>
+          <span class="brand-tag">Illustrator</span>
+          <span class="brand-tag">Midjourney</span>
+          <span class="brand-tag">Runway</span>
+          <span class="brand-tag">DaVinci Resolve</span>
+          <!-- dup -->
+          <span class="brand-tag">Premiere Pro</span>
+          <span class="brand-tag">After Effects</span>
+          <span class="brand-tag">Figma</span>
+          <span class="brand-tag">Photoshop</span>
+          <span class="brand-tag">Illustrator</span>
+          <span class="brand-tag">Midjourney</span>
+          <span class="brand-tag">Runway</span>
+          <span class="brand-tag">DaVinci Resolve</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQs (animated) -->
+  <section class="section alt" id="faq">
+    <div class="container">
+      <h2 class="section-title">FAQ</h2>
+      <div class="accordion" data-accordion-animated>
+        <details>
+          <summary class="accordion-header"><span>How fast is delivery?</span><i class="chev" aria-hidden="true"></i></summary>
+          <div class="accordion-panel"><div class="accordion-panel-inner"><p>Pro plan: ~48 hours per request. Starter: ~3 business days. Enterprise: custom SLAs and priority.</p></div></div>
+        </details>
+        <details>
+          <summary class="accordion-header"><span>What’s included?</span><i class="chev" aria-hidden="true"></i></summary>
+          <div class="accordion-panel"><div class="accordion-panel-inner"><p>Direction, production, and QA. Video includes motion, captions, SFX; Images include styling & retouching; Content includes research & revisions; Logos include usage guides.</p></div></div>
+        </details>
+        <details>
+          <summary class="accordion-header"><span>Do we own the files?</span><i class="chev" aria-hidden="true"></i></summary>
+          <div class="accordion-panel"><div class="accordion-panel-inner"><p>Yes. Full commercial usage and source files on delivery.</p></div></div>
+        </details>
+        <details>
+          <summary class="accordion-header"><span>How do revisions work?</span><i class="chev" aria-hidden="true"></i></summary>
+          <div class="accordion-panel"><div class="accordion-panel-inner"><p>2–3 rounds are standard. We align on direction early to keep iterations tight.</p></div></div>
+        </details>
+        <details>
+          <summary class="accordion-header"><span>Can you work within our stack?</span><i class="chev" aria-hidden="true"></i></summary>
+          <div class="accordion-panel"><div class="accordion-panel-inner"><p>Yes — we collaborate in your tools (Drive, Notion, Asana, Slack) or provide ours.</p></div></div>
+        </details>
+        <details>
+          <summary class="accordion-header"><span>Do you sign NDAs?</span><i class="chev" aria-hidden="true"></i></summary>
+          <div class="accordion-panel"><div class="accordion-panel-inner"><p>Absolutely. We can sign yours or provide one.</p></div></div>
+        </details>
+        <details>
+          <summary class="accordion-header"><span>How to start?</span><i class="chev" aria-hidden="true"></i></summary>
+          <div class="accordion-panel"><div class="accordion-panel-inner"><p>Pick a plan or contact us for a custom scope. We’ll handle onboarding and your first brief in a day.</p></div></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="container cta-inner luxe-border">
+      <h2>Ready to create something great?</h2>
+      <p>Start with Pro, or chat with us about a custom plan.</p>
+      <div>
+        <a href="plans.html" class="btn btn-primary">Get Started</a>
+        <a href="contact.html" class="btn btn-accent">Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mini cart (Request quote) -->
+  <div class="selected-bar" id="requestBar" hidden>
+    <button class="btn btn-ghost btn-sm" id="clearSelection">Clear</button>
+    <span class="pill">Selected: <span id="selectedCount">0</span></span>
+    <button class="btn btn-accent btn-sm" id="requestQuote">Request quote</button>
+  </div>
+
+  <!-- Quick View Modal -->
+  <div class="modal" id="quickView" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="qvTitle">
+      <button class="modal-close" aria-label="Close" data-close>✕</button>
+      <div class="modal-media" id="qvMedia"></div>
+      <div class="modal-body">
+        <h3 id="qvTitle"></h3>
+        <p id="qvDesc" class="lede"></p>
+        <div class="modal-meta">
+          <span class="pill" id="qvCat"></span>
+          <span class="pill" id="qvTime"></span>
+        </div>
+        <div class="modal-actions">
+          <a class="btn btn-primary" id="qvLearn" href="#">Learn more</a>
+          <button class="btn btn-accent" id="qvAdd">Add to quote</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Back to top -->
+  <button class="back-to-top" id="backTop" aria-label="Back to top" hidden>↑</button>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="brand">
+          <span class="brand-mark">✨</span>
+          <span class="brand-name">Creatix Studio</span>
+        </div>
+        <p>AI-powered creative services with human quality control. From concept to delivery, on-brand and on time.</p>
+        <form class="newsletter" action="#" onsubmit="event.preventDefault()">
+          <input type="email" placeholder="Your email" aria-label="Email for newsletter" required>
+          <button class="btn btn-primary" type="submit">Subscribe</button>
+        </form>
+        <div class="social">
+          <a href="#" aria-label="Twitter" title="Twitter">𝕏</a>
+          <a href="#" aria-label="LinkedIn" title="LinkedIn">in</a>
+          <a href="#" aria-label="YouTube" title="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services" data-jump="Video">Video Creation</a></li>
+          <li><a href="#services" data-jump="Images">Image Generation</a></li>
+          <li><a href="#services" data-jump="Content">Content Writing</a></li>
+          <li><a href="#services" data-jump="Logos">Logo Generation</a></li>
+          <li><a href="#services" data-jump="Fashion">Fashion & Clothes</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="plans.html">Plans</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#" aria-disabled="true">Blog</a></li>
+          <li><a href="#" aria-disabled="true">Guides</a></li>
+          <li><a href="#" aria-disabled="true">Case Studies</a></li>
+          <li><a href="#" aria-disabled="true">Help Center</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© <span id="year"></span> Creatix Studio. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script src="main.js?v=9"></script>
+  <script src="chatbot.js"></script>
+</body>
+</html>

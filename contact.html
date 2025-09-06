@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Contact Us — Creatix Studio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Contact Creatix Studio for quotes, partnerships, and support.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=12">
+
+  <!-- Page enhancements: overlay header, hero, sequenced reveals, form polish -->
+  <style>
+    :root{
+      --hero-mask-start: rgba(0,0,0,.65);
+      --hero-mask-end: rgba(0,0,0,.25);
+      --glass-surface: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.14);
+      --muted: rgba(255,255,255,0.8);
+      --muted-strong: rgba(255,255,255,0.92);
+      --accent:#9fe8df;
+    }
+
+    /* Overlaid header with hide/show on scroll */
+    .site-header.header-overlay{
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      transform:translateY(0);
+      transition:transform .35s ease, background .25s ease, box-shadow .25s ease;
+      background:linear-gradient(to bottom, rgba(0,0,0,.5), rgba(0,0,0,0));
+    }
+    .site-header.header-overlay.solid{
+      background:rgba(10,10,10,.9);
+      backdrop-filter:saturate(140%) blur(10px);
+      box-shadow:0 6px 24px rgba(0,0,0,.25);
+    }
+    .site-header--hidden{ transform:translateY(-100%); }
+    .site-header.header-overlay .brand-name,
+    .site-header.header-overlay .brand-mark,
+    .site-header.header-overlay nav a,
+    .site-header.header-overlay .dropdown-toggle{ color:#fff; }
+    .site-header.header-overlay .nav-toggle .bar{ background:#fff; }
+    .site-header.header-overlay .nav-cta .btn{ background:#fff; color:#111; }
+
+    /* Hero: full-bleed, full-height */
+    .hero.hero-bg{
+      position:relative;
+      background-image:var(--hero-image);
+      background-size:cover; background-position:center;
+      color:#fff;
+      min-height:100vh; min-height:100svh; min-height:100dvh;
+      display:flex; align-items:center; width:100%;
+      margin:0; border-radius:0; isolation:isolate;
+      padding-top:6rem; /* clear the fixed header */
+    }
+    .hero.hero-bg::before{
+      content:""; position:absolute; inset:0; z-index:0;
+      background:
+        linear-gradient(180deg, var(--hero-mask-start) 0%, transparent 45%),
+        radial-gradient(90% 70% at 50% 30%, rgba(0,0,0,.35), rgba(0,0,0,.75));
+    }
+    .hero.hero-bg .container{ position:relative; z-index:1; }
+    .hero-copy .eyebrow{ letter-spacing:normal; text-transform:none; color:var(--muted); margin-bottom:.5rem; font-weight:600; }
+    .hero-copy .lede{ color:var(--muted-strong); max-width:62ch; }
+
+    /* Scroll indicator */
+    .scroll-indicator{ position:absolute; left:50%; bottom:1rem; transform:translateX(-50%); color:var(--muted); font-size:.9rem; display:inline-flex; align-items:center; gap:.5rem; z-index:1; }
+    .scroll-indicator i{ width:10px; height:16px; border-radius:6px; border:2px solid var(--muted); position:relative; display:inline-block; }
+    .scroll-indicator i::after{ content:""; position:absolute; left:50%; top:2px; transform:translateX(-50%); width:2px; height:4px; background:var(--muted-strong); border-radius:2px; animation:wheel 1.6s ease-in-out infinite; }
+    @keyframes wheel{ 0%{transform:translate(-50%,0);opacity:1} 100%{transform:translate(-50%,6px);opacity:0} }
+
+    /* Sequenced reveals */
+    [data-seq] > *{ opacity:0; transform:translateY(14px); transition:opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1); transition-delay:calc(var(--i,0)*90ms); will-change:transform,opacity; }
+    [data-seq].in > *{ opacity:1; transform:translateY(0); }
+
+    /* Contact layout + glass cards */
+    .contact-grid{ display:grid; grid-template-columns:1.2fr .8fr; gap:24px; }
+    .card-soft, .contact-card{
+      background:var(--glass-surface);
+      border:1px solid var(--glass-border);
+      border-radius:16px; color:#fff;
+    }
+    .contact-card{ padding:18px; }
+
+    /* Form styling */
+    .form{ padding:18px; }
+    .form-row{ display:grid; gap:6px; margin:10px 0; }
+    .form-row.inline{ grid-template-columns:1fr 1fr; gap:10px; }
+    label{ font-weight:600; color:#e6f0f3; }
+    input, textarea, select{
+      width:100%; padding:12px 12px; border-radius:10px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.06); color:#fff;
+      outline:none;
+    }
+    input:focus, textarea:focus, select:focus{ border-color:#fff; box-shadow:0 0 0 3px rgba(255,255,255,.08); }
+    .form-note{ margin-top:10px; color:var(--muted-strong); }
+    .error-msg{ color:#ffb4b4; font-size:.9rem; display:none; }
+    .has-error .error-msg{ display:block; }
+    .has-error input, .has-error textarea, .has-error select{ border-color:#ff7b7b; }
+
+    /* Contact options */
+    .methods{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+    .method{ padding:18px; border-radius:12px; background:var(--glass-surface); border:1px solid var(--glass-border); }
+    .method h4{ margin:6px 0; }
+
+    /* Locations */
+    .locations{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+    .loc{ padding:18px; border-radius:12px; background:var(--glass-surface); border:1px solid var(--glass-border); }
+    .loc .time{ color:var(--muted); font-size:.95rem; }
+
+    /* Accordion (reuse animated variant if present) */
+    .accordion[data-accordion-animated] details{ background:var(--glass-surface); border:1px solid var(--glass-border); border-radius:12px; overflow:hidden; }
+    .accordion .accordion-header{ display:flex; align-items:center; justify-content:space-between; padding:14px 16px; cursor:pointer; }
+    .accordion .accordion-panel{ padding:0 16px 14px; color:#fff; }
+    .accordion .chev{ width:18px; height:18px; border:solid rgba(255,255,255,.8); border-width:0 2px 2px 0; transform:rotate(45deg); transition:transform .25s ease; display:inline-block; }
+    details[open] .chev{ transform:rotate(-135deg); }
+
+    /* Mobile */
+    @media (max-width:960px){
+      .contact-grid{ grid-template-columns:1fr; }
+      .methods, .locations{ grid-template-columns:1fr; }
+    }
+    @media (max-width:900px){
+      .site-header.header-overlay .nav-links{
+        background:rgba(0,0,0,.75);
+        backdrop-filter:saturate(140%) blur(8px);
+      }
+      .site-header.header-overlay .nav-links a{ color:#fff; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header (overlay with hide/show on scroll) -->
+  <header class="site-header header-overlay" id="siteHeader">
+    <div class="container nav">
+      <a href="index.html" class="brand" aria-label="Creatix Studio">
+        <span class="brand-mark">✨</span>
+        <span class="brand-name">Creatix Studio</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-controls="primaryNav" aria-expanded="false">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+      <nav>
+        <ul class="nav-links" id="primaryNav">
+          <li><a href="index.html" data-nav>Home</a></li>
+          <li><a href="about.html" data-nav>About Us</a></li>
+          <li class="dropdown">
+            <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="menu" aria-controls="servicesMenu">Services ▾</button>
+            <ul class="dropdown-menu" id="servicesMenu" role="menu">
+              <li role="none"><a role="menuitem" href="services.html">All Services</a></li>
+              <li role="none"><a role="menuitem" href="service-video-creation.html">Video Creation</a></li>
+              <li role="none"><a role="menuitem" href="service-image-generation.html">Image Generation</a></li>
+              <li role="none"><a role="menuitem" href="service-content-writing.html">Content Writing</a></li>
+              <li role="none"><a role="menuitem" href="service-logo-generation.html">Logo Generation</a></li>
+              <li role="none"><a role="menuitem" href="service-fashion-design.html">Fashion & Clothes Design</a></li>
+            </ul>
+          </li>
+          <li><a href="plans.html" data-nav>Plans</a></li>
+          <li class="nav-cta"><a href="contact.html" class="btn btn-accent" data-nav>Contact Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero with 100vh background -->
+  <section
+    class="hero hero-modern hero-bg"
+    style="--hero-image: url('https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=1920&q=80');"
+  >
+    <div class="container" data-seq>
+      <div class="hero-copy" style="--i:0">
+        <p class="eyebrow">Contact</p>
+        <h1 class="display">Tell us about your project</h1>
+        <p class="lede">Share goals, timelines, and examples you like — we’ll get back within one business day.</p>
+        <div class="hero-actions" style="margin-top:12px;">
+          <a href="#contact" class="btn btn-primary">Start a project</a>
+          <a href="#methods" class="btn btn-ghost">Other ways to reach us</a>
+        </div>
+      </div>
+    </div>
+    <a class="scroll-indicator" href="#contact" aria-label="Scroll to form"><i aria-hidden="true"></i> Scroll</a>
+  </section>
+
+  <!-- Contact form + details -->
+  <section class="section" id="contact">
+    <div class="container contact-grid" data-seq>
+      <!-- Form -->
+      <div class="contact-card" style="--i:0">
+        <form id="contactForm" class="form" novalidate>
+          <div class="form-row inline">
+            <div>
+              <label for="name">Name</label>
+              <input id="name" name="name" autocomplete="name" required>
+              <div class="error-msg">Please enter your name</div>
+            </div>
+            <div>
+              <label for="company">Company</label>
+              <input id="company" name="company" autocomplete="organization">
+            </div>
+          </div>
+          <div class="form-row inline">
+            <div>
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" required>
+              <div class="error-msg">A valid email is required</div>
+            </div>
+            <div>
+              <label for="service">Service</label>
+              <select id="service" name="service" required>
+                <option value="">Choose a service…</option>
+                <option>Video Creation</option>
+                <option>Image Generation</option>
+                <option>Content Writing</option>
+                <option>Logo Generation</option>
+                <option>Fashion & Clothes Design</option>
+              </select>
+              <div class="error-msg">Please select a service</div>
+            </div>
+          </div>
+          <div class="form-row inline">
+            <div>
+              <label for="budget">Budget</label>
+              <select id="budget" name="budget">
+                <option value="">Select budget…</option>
+                <option>Under $1k</option>
+                <option>$1k–$3k</option>
+                <option>$3k–$8k</option>
+                <option>$8k+</option>
+              </select>
+            </div>
+            <div>
+              <label for="timeline">Timeline</label>
+              <select id="timeline" name="timeline">
+                <option value="">Select timeline…</option>
+                <option>ASAP</option>
+                <option>1–2 weeks</option>
+                <option>3–4 weeks</option>
+                <option>Flexible</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="6" placeholder="Share a bit about your goals, audience, and any references…" required></textarea>
+            <div class="error-msg">Please include a short message</div>
+          </div>
+          <div class="form-row" style="display:flex; align-items:center; gap:10px;">
+            <input id="nda" name="nda" type="checkbox"> <label for="nda" style="margin:0;">Need an NDA?</label>
+          </div>
+          <button class="btn btn-primary" type="submit">Send message</button>
+          <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+
+      <!-- Contact options -->
+      <aside class="contact-card" style="--i:1">
+        <h3>Contact options</h3>
+        <div class="methods" id="methods" style="margin-top:10px;">
+          <div class="method">
+            <div class="icn">📧</div>
+            <h4>Email</h4>
+            <p><a href="mailto:hello@creatix.example">hello@creatix.example</a></p>
+            <small class="muted">We reply within 1 business day.</small>
+          </div>
+          <div class="method">
+            <div class="icn">📅</div>
+            <h4>Book a call</h4>
+            <p><a href="#" aria-disabled="true">Schedule via Calendly</a></p>
+            <small class="muted">30‑min discovery call.</small>
+          </div>
+          <div class="method">
+            <div class="icn">💬</div>
+            <h4>Slack Connect</h4>
+            <p><a href="#" aria-disabled="true">Request an invite</a></p>
+            <small class="muted">For ongoing engagements.</small>
+          </div>
+        </div>
+
+        <h3 style="margin-top:16px;">Locations & time zones</h3>
+        <div class="locations" id="tzGrid" style="margin-top:10px;">
+          <div class="loc">
+            <strong>Americas</strong>
+            <div class="time" data-tz="America/New_York">—</div>
+          </div>
+          <div class="loc">
+            <strong>Europe</strong>
+            <div class="time" data-tz="Europe/London">—</div>
+          </div>
+          <div class="loc">
+            <strong>APAC</strong>
+            <div class="time" data-tz="Asia/Singapore">—</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- FAQs -->
+  <section class="section alt">
+    <div class="container">
+      <h2 class="section-title">FAQs</h2>
+      <div class="accordion" data-accordion-animated data-seq>
+        <details style="--i:0">
+          <summary class="accordion-header"><span>How soon can we start?</span><i class="chev" aria-hidden="true"></i></summary>
+          <div class="accordion-panel"><div class="accordion-panel-inner"><p>Pro and Enterprise kick off within 1–3 business days. We’ll align on scope, examples, and delivery windows before we start.</p></div></div>
+        </details>
+        <details style="--i:1">
+          <summary class="accordion-header"><span>Do you sign NDAs?</span><i class="chev" aria-hidden="true"></i></summary>
+          <div class="accordion-panel"><div class="accordion-panel-inner"><p>Yes — we can sign yours or provide ours. Tick “Need an NDA?” in the form and we’ll follow up.</p></div></div>
+        </details>
+        <details style="--i:2">
+          <summary class="accordion-header"><span>What tools do you work in?</span><i class="chev" aria-hidden="true"></i></summary>
+          <div class="accordion-panel"><div class="accordion-panel-inner"><p>We adapt to your stack (Drive, Notion, Asana, Slack) or provide ours. Deliverables arrive in your required formats.</p></div></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="container cta-inner luxe-border" data-seq>
+      <h2 style="--i:0">Ready to create something great?</h2>
+      <p style="--i:1">Start with Pro, or chat with us about a custom plan.</p>
+      <div style="--i:2">
+        <a href="plans.html" class="btn btn-primary">View Plans</a>
+        <a href="#contact" class="btn btn-accent">Send a message</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer (matches other pages) -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="brand">
+          <span class="brand-mark">✨</span>
+          <span class="brand-name">Creatix Studio</span>
+        </div>
+        <p>AI-powered creative services with human quality control. From concept to delivery, on-brand and on time.</p>
+        <form class="newsletter" action="#" onsubmit="event.preventDefault()">
+          <input type="email" placeholder="Your email" aria-label="Email for newsletter" required>
+          <button class="btn btn-primary" type="submit">Subscribe</button>
+        </form>
+        <div class="social">
+          <a href="#" aria-label="Twitter" title="Twitter">𝕏</a>
+          <a href="#" aria-label="LinkedIn" title="LinkedIn">in</a>
+          <a href="#" aria-label="YouTube" title="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="services.html">All Services</a></li>
+          <li><a href="service-video-creation.html">Video Creation</a></li>
+          <li><a href="service-image-generation.html">Image Generation</a></li>
+          <li><a href="service-content-writing.html">Content Writing</a></li>
+          <li><a href="service-logo-generation.html">Logo Generation</a></li>
+          <li><a href="service-fashion-design.html">Fashion & Clothes</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="plans.html">Plans</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#" aria-disabled="true">Blog</a></li>
+          <li><a href="#" aria-disabled="true">Guides</a></li>
+          <li><a href="#" aria-disabled="true">Case Studies</a></li>
+          <li><a href="#" aria-disabled="true">Help Center</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© <span id="year"></span> Creatix Studio. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Header hide/show on scroll + solid background after threshold
+    (function(){
+      const header = document.getElementById('siteHeader');
+      let lastY = window.scrollY;
+      const SOLID_THRESHOLD = 120;
+      const onScroll = () => {
+        const y = window.scrollY;
+        if (y > lastY && y > 80) header.classList.add('site-header--hidden');
+        else header.classList.remove('site-header--hidden');
+        lastY = y;
+        if (y > SOLID_THRESHOLD) header.classList.add('solid');
+        else header.classList.remove('solid');
+      };
+      window.addEventListener('scroll', onScroll, { passive:true });
+      onScroll();
+    })();
+
+    // Sequenced reveal
+    (function(){
+      const groups = document.querySelectorAll('[data-seq]');
+      const setIndexVars = (g) => Array.from(g.children).forEach((el,i)=>{ if(!el.style.getPropertyValue('--i')) el.style.setProperty('--i', i); });
+      groups.forEach(setIndexVars);
+      if ('IntersectionObserver' in window){
+        const io = new IntersectionObserver(entries=>{
+          entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }});
+        }, { threshold:0.15 });
+        groups.forEach(g=>io.observe(g));
+      } else { groups.forEach(g=>g.classList.add('in')); }
+    })();
+
+    // Live times for locations
+    (function(){
+      const els = document.querySelectorAll('[data-tz]');
+      const fmt = (d) => d.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+      const tick = () => {
+        els.forEach(el=>{
+          const tz = el.getAttribute('data-tz');
+          const now = new Date();
+          const localeTime = new Intl.DateTimeFormat([], { timeZone: tz, hour:'2-digit', minute:'2-digit' }).format(now);
+          el.textContent = localeTime;
+        });
+      };
+      tick(); setInterval(tick, 60000);
+    })();
+
+    // Contact form validation + fake submit
+    (function(){
+      const form = document.getElementById('contactForm');
+      const note = document.getElementById('formNote');
+      if (!form) return;
+
+      const showError = (field) => field.closest('.form-row')?.classList.add('has-error');
+      const clearError = (field) => field.closest('.form-row')?.classList.remove('has-error');
+
+      form.addEventListener('input', (e)=>{
+        const t = e.target;
+        if (t.checkValidity()) clearError(t);
+      });
+
+      form.addEventListener('submit', (e)=>{
+        e.preventDefault();
+        note.textContent = '';
+        let valid = true;
+        const req = form.querySelectorAll('[required]');
+        req.forEach(el=>{
+          if (!el.value || (el.type === 'email' && !el.validity.valid)){
+            valid = false; showError(el);
+          }
+        });
+        if (!valid){
+          note.textContent = 'Please fix the highlighted fields.';
+          return;
+        }
+        // Simulate async send
+        const data = Object.fromEntries(new FormData(form).entries());
+        note.textContent = 'Sending…';
+        setTimeout(()=>{
+          note.textContent = 'Thanks! We’ll reach out within one business day.';
+          form.reset();
+        }, 900);
+        console.log('Contact form payload:', data);
+      });
+    })();
+
+    // Footer year
+    (function(){ const y=document.getElementById('year'); if (y) y.textContent=new Date().getFullYear(); })();
+  </script>
+</body>
+</html>
